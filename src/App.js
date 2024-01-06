@@ -12,8 +12,6 @@ function App() {
   const [allLocations, setAllLocations] = useState([]);
   const [currentCity, setCurrentCity] = useState('See all cities');
 
-  
-
   useEffect(() => {
     fetchData();
   }, [currentCity, noe]);
