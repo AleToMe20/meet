@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import puppeteer from "puppeteer";
 
 // FEATURE 2
 describe('show/hide an event details', () => {
@@ -12,8 +12,8 @@ describe('show/hide an event details', () => {
     await page.waitForSelector('.event');
   });
 
-  afterAll(() => {
-    browser.close();
+  afterAll(async () => {
+    await browser.close();
   });
   // SCENARIO 1
   test('An event element is collapsed by default', async () => {

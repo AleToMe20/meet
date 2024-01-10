@@ -1,22 +1,33 @@
-import { useState } from "react";
+import puppeteer from "puppeteer";
 
+describe("show/hide event details", () => {
+  let browser;
+  let page;
+  beforeAll(async () => {
+    browser = await puppeteer.launch();
+    page = await browser.newPage();
+    await page.goto("http://localhost:3000/");
+    await page.waitForSelector(".event");
+  });
 
-const NumberOfEvents = ({setNumberOfEvents}) => {
-    const [eventNumber, setEventNumber] = useState('32');
-    const handleInputChange = (event) => {
-        const value = event.target.value;
-        setEventNumber(value);
-        setNumberOfEvents(value);
-    }
-       return (
-        <div id="numberOfEvents">
-            <input
-              type="text"
-              value={eventNumber}
-              onChange={handleInputChange}
-            />
-        </div>
-       )
-}
+  afterAll(async () => {
+    await browser.close();
+  });
 
-export default NumberOfEvents;
+  test("An event element is collapsed by default", async () => {
+    const eventDetails = await page.$(".event .description");
+    expect(eventDetails).toBeNull();
+  });
+
+  test("User can expand an event to see details", async () => {
+    await page.click(".event .details-btn");
+    const eventDetails = await page.$(".event .description");
+    expect(eventDetails).toBeDefined();
+  });
+  test("User can collapse an event to hide details", async () => {
+    await page.click(".event .details-btn");
+    await page.waitForTimeout(500);
+    const eventDetails = await page.$(".event .description");
+    expect(eventDetails).toBeNull();
+  });
+});
